@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# noinspection PyPackageRequirements
 import time
 import requests
 import json
@@ -22,10 +23,13 @@ class Timer(object):
         从京东服务器获取时间毫秒
         :return:
         """
-        url = 'https://a.jd.com//ajax/queryServerData.html'
-        ret = requests.get(url).text
-        js = json.loads(ret)
-        return int(js["serverTime"])
+        headers = requests.get('https://api.m.jd.com/client.action&client=wh5').headers
+        print(headers)
+        response = requests.get('https://api.m.jd.com/client.action&client=wh5',headers=headers)
+
+        x = eval(response.text)
+        return int(x['currentTime2'])
+        # return int(js["serverTime"])
 
     def local_time(self):
         """
